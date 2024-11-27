@@ -8,7 +8,7 @@ def load_image(path: str, target_size: tuple[int, int]=None, tensor: bool=True) 
     if target_size:
         image = image.resize(target_size)
     if tensor:
-        return ToTensor()(image)
+        return ToTensor()(image).clamp(0, 1)
     else:
         return image
 

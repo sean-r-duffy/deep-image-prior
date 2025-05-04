@@ -1,5 +1,6 @@
 import torch.nn as nn
 from torch import Tensor
+from typing import Union, List
 
 
 def down_layer(in_channels: int, out_channels: int, k: int) -> nn.Sequential:
@@ -58,7 +59,7 @@ def up_layer(in_channels: int, out_channels: int, k: int, upsampling: str = 'bil
     return layer
 
 
-def skip_layer(in_channels: int, out_channels: int, k: int) -> nn.Sequential | None:
+def skip_layer(in_channels: int, out_channels: int, k: int) -> Union[nn.Sequential, None]:
     """
     Creates a skip connection layer with a convolutional block, batch normalization, and LeakyReLU activation.
     If `out_channels` is 0, the function returns None (there is no skip connection).
@@ -95,7 +96,7 @@ class DIPNet(nn.Module):
     :ivar final_layer: Convolutional layer to produce the three-channel output image.
     """
 
-    def __init__(self, nu: list[int], ku: list[int], nd: list[int], kd: list[int], ns: list[int], ks: list[int],
+    def __init__(self, nu: List[int], ku: List[int], nd: List[int], kd: List[int], ns: List[int], ks: List[int],
                  d_in: tuple, upsampling: str = 'bilinear') -> None:
         """
         Initializes the DIPNet class with encoder, decoder, and skip connection modules.

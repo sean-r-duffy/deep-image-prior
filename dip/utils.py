@@ -2,9 +2,11 @@ import torch
 from matplotlib import pyplot as plt
 from torchvision.transforms import ToTensor, ToPILImage
 from PIL import Image
+from PIL.Image import Image as PILImage
+from typing import Tuple, Union
 
 
-def load_image(path: str, target_size: tuple[int, int] = None, tensor: bool = True) -> Image or torch.Tensor:
+def load_image(path: str, target_size: Tuple[int, int] = None, tensor: bool = True) -> Union[PILImage, torch.Tensor]:
     """
     Loads an image from a specified path, processes it as RGB, and optionally resizes.
 

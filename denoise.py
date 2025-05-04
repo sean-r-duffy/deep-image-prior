@@ -10,7 +10,8 @@ from dip.utils import load_image, save_image
 # Training function
 def train(image_path, save_interval, output_dir, device):
     # Load image
-    base_filename = os.path.splitext(os.path.basename(image_path))[0]
+    os.makedirs(output_dir, exist_ok=True) # Create output directory if it doesn't exist
+    base_filename = os.path.splitext(os.path.basename(image_path))[0] # Get original filename without extension
     image = load_image(image_path, tensor=True).to(device)
     
     # Hyperparameters

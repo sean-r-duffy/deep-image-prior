@@ -133,7 +133,7 @@ class DIPNet(nn.Module):
             encoder_layers.append(down_layer(nd[i - 1], nd[i], kd[i]))
             skip_layers.append(skip_layer(nd[i], ns[i], ks[i]))
         for i in range(self.n - 1):
-            decoder_layers.append(up_layer(nd[i + 1], nd[i], ku[i]))
+            decoder_layers.append(up_layer(nd[i + 1], nd[i], ku[i], upsampling=upsampling))
 
         # Initialize 'top' decode layer separately
         decoder_layers.append(up_layer(nu[self.n - 1], nu[self.n - 1], ku[self.n - 1]))

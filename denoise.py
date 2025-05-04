@@ -12,11 +12,11 @@ def train(image_path, save_interval, output_dir, device):
     # Load image
     os.makedirs(output_dir, exist_ok=True) # Create output directory if it doesn't exist
     base_filename = os.path.splitext(os.path.basename(image_path))[0] # Get original filename without extension
-    image = load_image(image_path, tensor=True).to(device)
+    image = load_image(image_path, target_size=(512, 512), tensor=True).to(device)
     
     # Hyperparameters
-    w = image.shape[-1]
-    h = image.shape[-2]
+    w = 512 # image.shape[-1]
+    h = 512 # image.shape[-2]
     z_shape, u_range = (1, 3, w, h), (0, 0.1)
     nu = nd = [128, 128, 128, 128, 128]
     ku = kd = [3, 3, 3, 3, 3]
@@ -43,14 +43,14 @@ def train(image_path, save_interval, output_dir, device):
         # Forward pass, loss calculation, and backprop of loss
         optimizer.zero_grad()
         output = model(perturbed_z)
-        loss = loss_function(output, image)
+        loss = loss_function(output, image.unsqueeze(0))
         loss.backward()
         losses.append(loss.item())
         optimizer.step()
 
         # Print loss, model output
         if epoch % save_interval == 0 or epoch == epochs - 1:
-            save_image(output, f"{base_filename}_denoising_iter_{epoch}.png")
+            save_image(output, f"{output_dir}/{base_filename}_denoising_iter_{epoch:05d}.png")
 
     save_image(model(z), f"{output_dir}/{base_filename}_denoising_final.png")
 
@@ -58,7 +58,7 @@ def train(image_path, save_interval, output_dir, device):
 if __name__ == "__main__":
     # Parse command line arguments
     parser = ArgumentParser()
-    parser.add_argument("image", type=str, help="Path to input file", required=True)
+    parser.add_argument("image", type=str, help="Path to input file")
     parser.add_argument("--iterations", type=int, default=5000, help="Number of training iterations")
     parser.add_argument("--save_interval", type=int, default=50, help="Write the model output every n iterations")
     parser.add_argument("--output_dir", type=str, default="outputs", help="Directory to save output images")

@@ -23,7 +23,7 @@ def train(image_path, save_interval, output_dir, device):
     ns = [0, 0, 0, 4, 0]
     ks = [1, 1, 1, 1, 1]
     sigma_p = 1 / 30
-    epochs = 10000
+    epochs = 8000
     lr = 0.01
     upsampling = 'bilinear'
     loss_function = nn.MSELoss()    
@@ -60,7 +60,7 @@ if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument("image", type=str, help="Path to input file")
     parser.add_argument("--iterations", type=int, default=5000, help="Number of training iterations")
-    parser.add_argument("--save_interval", type=int, default=50, help="Write the model output every n iterations")
+    parser.add_argument("--save_interval", type=int, default=1000, help="Write the model output every n iterations")
     parser.add_argument("--output_dir", type=str, default="outputs", help="Directory to save output images")
     parser.add_argument("--use_gpu", type=bool, default=True, help="If True and GPU is available, use it for training")
     args = parser.parse_args()
